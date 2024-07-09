@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: ticketing_app
+  data:
+    redis:
+      host: redis
+      port: 6379
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    hikari:
+      jdbc-url: jdbc:mysql://localhost/grafolio?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul&rewriteBatchedStatements=true&sslMode=DISABLED&profileSql=true&maxQuerySizeToLog=999999
+      username: ocp
+      password: 1234qwer
+      connection-timeout: 10000
+      max-lifetime: 1200000
+      minimum-idle: 5
+      maximum-pool-size: 5
+      validation-timeout: 5000

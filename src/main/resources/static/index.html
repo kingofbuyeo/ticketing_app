@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot STOMP Example</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+<h1>Spring Boot STOMP Example</h1>
+<div>
+    <input type="text" id="userId" placeholder="Enter your id">
+    <button onclick="sendName()">Send</button>
+</div>
+<div id="greetings"></div>
+
+<script>
+    var stompClient = null;
+
+    function connect(userId) {
+        var socket = new SockJS('/reserved');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/wait/ticket/'+userId, function (greeting) {
+                showGreeting(greeting.body);
+            });
+        });
+    }
+
+    function sendName() {
+        var userId = document.getElementById('userId').value;
+        stompClient.send("/ticket/check/"+userId, {}, userId);
+        connect(userId)
+    }
+
+    function showGreeting(message) {
+        console.log("-------"+message)
+        var greetings = document.getElementById('greetings');
+        var greetingElement = document.createElement('div');
+        greetingElement.appendChild(document.createTextNode(message));
+        greetings.appendChild(greetingElement);
+    }
+
+    connect();
+</script>
+</body>
+</html>
